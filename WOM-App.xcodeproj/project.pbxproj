@@ -18,6 +18,8 @@
 		2252489A2B96637400B808FB /* WOM_AppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225248992B96637400B808FB /* WOM_AppUITestsLaunchTests.swift */; };
 		225248AA2B96739500B808FB /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225248A92B96739500B808FB /* Model.swift */; };
 		225248AF2B967AAA00B808FB /* ArtistListApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225248AE2B967AAA00B808FB /* ArtistListApi.swift */; };
+		225248F92B9690F800B808FB /* URLFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225248F82B9690F800B808FB /* URLFactory.swift */; };
+		225248FB2B9693C400B808FB /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225248FA2B9693C400B808FB /* ViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +55,8 @@
 		225248992B96637400B808FB /* WOM_AppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WOM_AppUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		225248A92B96739500B808FB /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		225248AE2B967AAA00B808FB /* ArtistListApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistListApi.swift; sourceTree = "<group>"; };
+		225248F82B9690F800B808FB /* URLFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLFactory.swift; sourceTree = "<group>"; };
+		225248FA2B9693C400B808FB /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +107,7 @@
 		225248752B96637300B808FB /* WOM-App */ = {
 			isa = PBXGroup;
 			children = (
+				225248F72B9690D800B808FB /* Network */,
 				225248AB2B967A6700B808FB /* Data */,
 				225248A82B96710000B808FB /* Domain */,
 				225248A72B9670EC00B808FB /* View */,
@@ -145,6 +150,7 @@
 			isa = PBXGroup;
 			children = (
 				225248A92B96739500B808FB /* Model.swift */,
+				225248FA2B9693C400B808FB /* ViewModel.swift */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -155,6 +161,14 @@
 				225248AE2B967AAA00B808FB /* ArtistListApi.swift */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		225248F72B9690D800B808FB /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				225248F82B9690F800B808FB /* URLFactory.swift */,
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -290,9 +304,11 @@
 			files = (
 				2252487B2B96637300B808FB /* ViewController.swift in Sources */,
 				225248772B96637300B808FB /* AppDelegate.swift in Sources */,
+				225248F92B9690F800B808FB /* URLFactory.swift in Sources */,
 				225248792B96637300B808FB /* SceneDelegate.swift in Sources */,
 				225248AF2B967AAA00B808FB /* ArtistListApi.swift in Sources */,
 				225248AA2B96739500B808FB /* Model.swift in Sources */,
+				225248FB2B9693C400B808FB /* ViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

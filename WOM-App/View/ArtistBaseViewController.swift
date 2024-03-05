@@ -2,7 +2,14 @@ import UIKit
 
 class ArtistBaseViewController: UIViewController {
     let tableView = UITableView()
-    var artistViewModels: [ViewModel] = []
+    let useCase = ArtistListUseCase(service: ArtistListApi())
+    var artistViewModels: [ViewModel] = [] {
+        didSet {
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,3 +72,4 @@ extension ArtistBaseViewController: UITableViewDelegate, UITableViewDataSource {
         navigationController?.present(detailViewController, animated: false)
     }
 }
+

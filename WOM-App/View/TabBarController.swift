@@ -5,45 +5,10 @@ class TabBarController: UITabBarController {
     var artistViewModels: [ViewModel] = []
     private let homeViewController = HomeViewController()
     private let favoritesViewController = FavoritesViewController()
-    private var completedRequestsCount = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchArtistList()
         prepareTabBar()
-    }
-    
-    private func fetchArtistList() {
-        let countryCodes: [CountryCode] = [.SE, .US, .CL]
-        let totalRequests = countryCodes.count
-        
-        countryCodes.forEach { codes in
-            useCase.getList(countryCode: codes) { result in
-                switch result {
-                case.success(let viewModels):
-                    self.artistViewModels.append(contentsOf: viewModels)
-                    self.completedRequestsCount += 1
-                    
-                    if self.completedRequestsCount == totalRequests {
-                        self.passDataToChildViewControllers(artistViewModels: self.artistViewModels)
-                    }
-            
-                case .failure(let error):
-                    print("Error fetching artist list: \(error)")
-                }
-            }
-        }
-    }
-    
-    private func passDataToChildViewControllers(artistViewModels: [ViewModel]) {
-        let filteredModel = artistViewModels.filter { viewModel in
-            artistViewModels.firstIndex(where: { $0.id == viewModel.id }) == artistViewModels.firstIndex(of: viewModel)
-        }
-        homeViewController.artistViewModels = filteredModel
-        
-        if let favoriteIDs = UserDefaults.standard.array(forKey: "SongID") as? [String] {
-            favoritesViewController.artistViewModels = filteredModel.filter { favoriteIDs.contains($0.id) }
-        }
     }
     
     private func prepareTabBar() {
@@ -68,11 +33,5 @@ class TabBarController: UITabBarController {
            UIGraphicsEndImageContext()
            return newImage ?? UIImage()
        }
-}
-
-
-
-protocol RefreshControl: AnyObject {
-    func update()
 }
 

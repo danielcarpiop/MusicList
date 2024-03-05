@@ -44,12 +44,12 @@ class ArtistGlobalInfoCell: UITableViewCell {
             imgView.widthAnchor.constraint(equalToConstant: 50),
             imgView.heightAnchor.constraint(equalToConstant: 50),
             
-            titleLabel.leadingAnchor.constraint(equalTo: imgView.trailingAnchor, constant: 12),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -40),
+            titleLabel.leadingAnchor.constraint(equalTo: imgView.trailingAnchor, constant: 20),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
             
-            subtitleLabel.leadingAnchor.constraint(equalTo: imgView.trailingAnchor, constant: 12),
-            subtitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
+            subtitleLabel.leadingAnchor.constraint(equalTo: imgView.trailingAnchor, constant: 20),
+            subtitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
             subtitleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
         ])
@@ -57,6 +57,13 @@ class ArtistGlobalInfoCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        titleLabel.text = nil
+        subtitleLabel.text = nil
+        imageView?.image = UIImage()
     }
     
     func configure(title: String, subtitle: String, imgURL: String) {

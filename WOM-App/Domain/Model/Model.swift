@@ -10,10 +10,11 @@ struct Feed: Codable {
 
 struct Entry: Codable {
     let title: Title
-    let imReleaseDate: ReleaseDate
+    let imReleaseDate: ReleaseDate?
     let rights: Rights
     let imImage: [Image]
     let link: [Link]
+    let id: Id
 
     enum CodingKeys: String, CodingKey {
         case title
@@ -21,6 +22,7 @@ struct Entry: Codable {
         case rights
         case imImage = "im:image"
         case link
+        case id
     }
 }
 
@@ -55,4 +57,16 @@ struct Link: Codable {
 
 struct LinkAttributes: Codable {
     let href: String
+}
+
+struct Id: Codable {
+    let attributes: AttributesId
+}
+
+struct AttributesId: Codable {
+    let imId: String
+    
+    enum CodingKeys: String, CodingKey {
+        case imId = "im:id"
+    }
 }

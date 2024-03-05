@@ -1,0 +1,3 @@
+final class FavoritesViewController: ArtistBaseViewController {
+}
+

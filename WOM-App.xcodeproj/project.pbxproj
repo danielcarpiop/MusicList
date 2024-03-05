@@ -24,7 +24,7 @@
 		225249022B96B07A00B808FB /* ArtistGlobalInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225249012B96B07A00B808FB /* ArtistGlobalInfoCell.swift */; };
 		225249052B96B43600B808FB /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 225249042B96B43600B808FB /* Kingfisher */; };
 		225249082B96C0EA00B808FB /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225249072B96C0EA00B808FB /* UIColor+Ext.swift */; };
-		2252490A2B96D9E000B808FB /* ModelUS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225249092B96D9E000B808FB /* ModelUS.swift */; };
+		226753DB2B96ED9200C5D1B8 /* ArtistDetailIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226753DA2B96ED9200C5D1B8 /* ArtistDetailIViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,7 +65,7 @@
 		225248FE2B969E5E00B808FB /* ArtistListUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistListUseCase.swift; sourceTree = "<group>"; };
 		225249012B96B07A00B808FB /* ArtistGlobalInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistGlobalInfoCell.swift; sourceTree = "<group>"; };
 		225249072B96C0EA00B808FB /* UIColor+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
-		225249092B96D9E000B808FB /* ModelUS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelUS.swift; sourceTree = "<group>"; };
+		226753DA2B96ED9200C5D1B8 /* ArtistDetailIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistDetailIViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,8 +152,9 @@
 		225248A72B9670EC00B808FB /* View */ = {
 			isa = PBXGroup;
 			children = (
-				225249002B96B03F00B808FB /* Components */,
+				226753DA2B96ED9200C5D1B8 /* ArtistDetailIViewController.swift */,
 				2252487A2B96637300B808FB /* ViewController.swift */,
+				225249002B96B03F00B808FB /* Components */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -188,7 +189,6 @@
 			children = (
 				225248A92B96739500B808FB /* Model.swift */,
 				225248FA2B9693C400B808FB /* ViewModel.swift */,
-				225249092B96D9E000B808FB /* ModelUS.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -360,9 +360,9 @@
 				225248792B96637300B808FB /* SceneDelegate.swift in Sources */,
 				225248AF2B967AAA00B808FB /* ArtistListApi.swift in Sources */,
 				225248AA2B96739500B808FB /* Model.swift in Sources */,
+				226753DB2B96ED9200C5D1B8 /* ArtistDetailIViewController.swift in Sources */,
 				225248FF2B969E5E00B808FB /* ArtistListUseCase.swift in Sources */,
 				225249082B96C0EA00B808FB /* UIColor+Ext.swift in Sources */,
-				2252490A2B96D9E000B808FB /* ModelUS.swift in Sources */,
 				225249022B96B07A00B808FB /* ArtistGlobalInfoCell.swift in Sources */,
 				225248FB2B9693C400B808FB /* ViewModel.swift in Sources */,
 			);

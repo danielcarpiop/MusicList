@@ -42,6 +42,11 @@ struct Rights: Codable {
 
 struct Image: Codable {
     let label: String
+    let attributes: Attributes
+}
+
+struct Attributes: Codable {
+    let height: String
 }
 
 struct Link: Codable {

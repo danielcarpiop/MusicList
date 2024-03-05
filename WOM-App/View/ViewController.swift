@@ -7,6 +7,12 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         prepare()
         view.backgroundColor = .purple
+        ArtistListApi().getList(countryCode: .CL) { response in
+            print(response)
+        }
+        
+        
+        
     }
 
     private func prepare() {

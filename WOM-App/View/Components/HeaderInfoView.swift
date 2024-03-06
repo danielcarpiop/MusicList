@@ -1,6 +1,12 @@
 import UIKit
 
 class HeaderInfoView: UIView {
+    private let viewContainer: UIView = {
+        let view = UIView(frame: .zero)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     private let itunes: UIImageView = {
         let image = UIImageView(frame: .zero)
         image.image = UIImage(resource: .itunesLogo)
@@ -32,20 +38,25 @@ class HeaderInfoView: UIView {
     }
     
     private func prepare() {
-        addSubview(itunes)
-        addSubview(titleLabel)
+        addSubview(viewContainer)
+        viewContainer.addSubview(itunes)
+        viewContainer.addSubview(titleLabel)
         
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: 50),
-            itunes.centerYAnchor.constraint(equalTo: centerYAnchor),
-            itunes.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            
+            viewContainer.centerXAnchor.constraint(equalTo: centerXAnchor),
+            viewContainer.centerYAnchor.constraint(equalTo: centerYAnchor),
+            
+            itunes.centerYAnchor.constraint(equalTo: viewContainer.centerYAnchor),
+            itunes.leadingAnchor.constraint(equalTo: viewContainer.leadingAnchor, constant: 20),
             
             itunes.heightAnchor.constraint(equalToConstant: 25),
             itunes.widthAnchor.constraint(equalToConstant: 25),
 
             titleLabel.leadingAnchor.constraint(equalTo: itunes.trailingAnchor, constant: 5),
-            titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20)
+            titleLabel.centerYAnchor.constraint(equalTo: viewContainer.centerYAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: viewContainer.trailingAnchor, constant: -20)
         ])
         
         backgroundColor = .white

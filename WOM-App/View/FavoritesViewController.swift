@@ -2,13 +2,7 @@ import UIKit
 
 final class FavoritesViewController: ArtistBaseViewController {
     private var completedRequestsCount = 0
-    private var favoriteModel: [ViewModel] = [] {
-        didSet {
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
-    }
+    private var favoriteModel: [ViewModel] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,18 +11,11 @@ final class FavoritesViewController: ArtistBaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        DispatchQueue.global().async {
-            self.fetchArtistList()
-        }
+        self.fetchArtistList()
     }
     
     @objc private func handleUserDefaultsChange() {
-        DispatchQueue.global().async {
-            self.fetchArtistList()
-        }
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
+        self.fetchArtistList()
     }
     
     private func fetchArtistList() {
@@ -44,8 +31,11 @@ final class FavoritesViewController: ArtistBaseViewController {
                     
                     if self.completedRequestsCount == totalRequests {
                         self.passDataToBase(viewModels: self.favoriteModel)
+                        self.completedRequestsCount = 0
                     }
-                    
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
                 case .failure(let error):
                     print("Error fetching artist list: \(error)")
                 }
@@ -54,9 +44,7 @@ final class FavoritesViewController: ArtistBaseViewController {
     }
     
     private func passDataToBase(viewModels: [ViewModel]) {
-        let filteredModel = favoriteModel.filter { viewModel in
-            favoriteModel.firstIndex(where: { $0.id == viewModel.id }) == favoriteModel.firstIndex(of: viewModel)
-        }
+        let filteredModel = Set(favoriteModel)
         if let favoriteIDs = UserDefaults.standard.array(forKey: "SongID") as? [String] {
             artistViewModels = filteredModel.filter { favoriteIDs.contains($0.id) }
         }

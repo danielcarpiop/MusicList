@@ -2,13 +2,7 @@ import UIKit
 
 class HomeViewController: ArtistBaseViewController {
     private var completedRequestsCount = 0
-    private var homeModel: [ViewModel] = [] {
-        didSet {
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
-    }
+    private var homeModel: [ViewModel] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,9 +11,7 @@ class HomeViewController: ArtistBaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        DispatchQueue.global().async {
-            self.fetchArtistList()
-        }
+        self.fetchArtistList()
     }
     
     @objc private func handleUserDefaultsChange() {
@@ -39,6 +31,7 @@ class HomeViewController: ArtistBaseViewController {
                     
                     if self.completedRequestsCount == totalRequests {
                         self.passDataToBase(viewModels: self.homeModel)
+                        self.completedRequestsCount = 0
                     }
                     
                 case .failure(let error):
@@ -49,9 +42,6 @@ class HomeViewController: ArtistBaseViewController {
     }
     
     private func passDataToBase(viewModels: [ViewModel]) {
-        let filteredModel = homeModel.filter { viewModel in
-            homeModel.firstIndex(where: { $0.id == viewModel.id }) == homeModel.firstIndex(of: viewModel)
-        }
-        artistViewModels = filteredModel
+        artistViewModels = Array(Set(homeModel))
     }
 }

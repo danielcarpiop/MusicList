@@ -185,6 +185,7 @@ class ArtistDetailIViewController: UIViewController {
             isFav = true
         }
         UserDefaults.standard.set(array, forKey: "SongID")
+        NotificationCenter.default.post(name: NSNotification.Name("FavoritesUpdated"), object: nil)
     }
 }
 
@@ -193,6 +194,7 @@ extension ArtistDetailIViewController {
         let location = sender.location(in: view)
         if !viewContainer.frame.contains(location) {
             dismiss(animated: true, completion: nil)
+            NotificationCenter.default.post(name: NSNotification.Name("DismissDetail"), object: nil)
         }
     }
 }

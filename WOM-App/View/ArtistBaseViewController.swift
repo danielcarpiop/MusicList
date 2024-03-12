@@ -55,7 +55,7 @@ extension ArtistBaseViewController: UITableViewDelegate, UITableViewDataSource {
             fatalError("Unable to dequeue ArtistGlobalInfoCell")
         }
         let viewModel = artistViewModels[indexPath.row]
-        cell.configure(title: viewModel.name, subtitle: viewModel.releaseDate, imgURL: viewModel.imageUrl)
+        cell.configure(title: viewModel.fullName, subtitle: viewModel.releaseDate, imgURL: viewModel.imageUrl)
         return cell
     }
     

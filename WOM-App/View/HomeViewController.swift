@@ -1,8 +1,9 @@
 import UIKit
+import Combine
 
 class HomeViewController: ArtistBaseViewController {
-    private var completedRequestsCount = 0
     private var homeModel: [ViewModel] = []
+    private var cancellables = Set<AnyCancellable>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,24 +21,26 @@ class HomeViewController: ArtistBaseViewController {
     
     private func fetchArtistList() {
         let countryCodes: [CountryCode] = [.SE, .US, .CL]
-        let totalRequests = countryCodes.count
         
-        countryCodes.forEach { codes in
-            useCase.getList(countryCode: codes) { result in
-                switch result {
-                case.success(let viewModels):
-                    self.homeModel.append(contentsOf: viewModels)
-                    self.completedRequestsCount += 1
-                    
-                    if self.completedRequestsCount == totalRequests {
-                        self.passDataToBase(viewModels: self.homeModel)
-                        self.completedRequestsCount = 0
+        let group = DispatchGroup()
+        
+        countryCodes.forEach { countryCode in
+            group.enter()
+            
+            useCase.getList(countryCode: countryCode)
+                .sink (receiveCompletion: { completion in
+                    switch completion {
+                    case .finished:
+                        break
+                    case .failure(let error):
+                        print("Error fetching artist list: \(error)")
                     }
+                    group.leave()
                     
-                case .failure(let error):
-                    print("Error fetching artist list: \(error)")
-                }
-            }
+                }, receiveValue: { [weak self] viewModels in
+                    self?.homeModel.append(contentsOf: viewModels)
+                })
+                .store(in: &cancellables)
         }
     }
     

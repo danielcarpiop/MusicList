@@ -1,8 +1,9 @@
 import UIKit
+import Combine
 
 final class FavoritesViewController: ArtistBaseViewController {
-    private var completedRequestsCount = 0
     private var favoriteModel: [ViewModel] = []
+    private var cancellables = Set<AnyCancellable>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,26 +21,26 @@ final class FavoritesViewController: ArtistBaseViewController {
     
     private func fetchArtistList() {
         let countryCodes: [CountryCode] = [.SE, .US, .CL]
-        let totalRequests = countryCodes.count
         
-        countryCodes.forEach { codes in
-            useCase.getList(countryCode: codes) { result in
-                switch result {
-                case.success(let viewModels):
-                    self.favoriteModel.append(contentsOf: viewModels)
-                    self.completedRequestsCount += 1
+        let group = DispatchGroup()
+        
+        countryCodes.forEach { countryCode in
+            group.enter()
+            
+            useCase.getList(countryCode: countryCode)
+                .sink (receiveCompletion: { completion in
+                    switch completion {
+                    case .finished:
+                        break
+                    case .failure(let error):
+                        print("Error fetching artist list: \(error)")
+                    }
+                    group.leave()
                     
-                    if self.completedRequestsCount == totalRequests {
-                        self.passDataToBase(viewModels: self.favoriteModel)
-                        self.completedRequestsCount = 0
-                    }
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                    }
-                case .failure(let error):
-                    print("Error fetching artist list: \(error)")
-                }
-            }
+                }, receiveValue: { [weak self] viewModels in
+                    self?.favoriteModel.append(contentsOf: viewModels)
+                })
+                .store(in: &cancellables)
         }
     }
     

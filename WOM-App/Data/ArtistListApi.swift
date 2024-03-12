@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 enum RequestError: Error {
     case invalidURL
@@ -7,38 +8,36 @@ enum RequestError: Error {
 }
 
 protocol ArtistListService {
-    func getList(countryCode: CountryCode, completion: @escaping (Result<Model, Error>) -> Void)
+    func getList(countryCode: CountryCode) -> AnyPublisher<Model, RequestError>
 }
 
 final class ArtistListApi: ArtistListService {
     private let urlFactory = URLFactory()
     private let urlSession = URLSession.shared
     
-    func getList(countryCode: CountryCode, completion: @escaping (Result<Model, Error>) -> Void) {
-        let url = urlFactory.generateURL(with: countryCode)
+    func getList(countryCode: CountryCode) -> AnyPublisher<Model, RequestError> {
+        guard let url = urlFactory.generateURL(with: countryCode) else {
+            return Fail(error: .invalidURL).eraseToAnyPublisher()
+        }
         
-        urlSession.dataTask(with: url) { data, response, error in
-            if let error {
-                completion(.failure(RequestError.networkError(error)))
-                return
+        return URLSession.shared.dataTaskPublisher(for: url)
+            .mapError { error in
+                RequestError.networkError(error)
             }
-            
-            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-                completion(.failure(RequestError.invalidResponse))
-                return
+            .flatMap { data, response -> AnyPublisher<Model, RequestError> in
+                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                    return Fail(error: RequestError.invalidResponse).eraseToAnyPublisher()
+                }
+                
+                do {
+                    let model = try JSONDecoder().decode(Model.self, from: data)
+                    return Just(model)
+                        .setFailureType(to: RequestError.self)
+                        .eraseToAnyPublisher()
+                } catch {
+                    return Fail(error: .invalidResponse).eraseToAnyPublisher()
+                }
             }
-            
-            guard let data else {
-                completion(.failure(RequestError.invalidResponse))
-                return
-            }
-            
-            do {
-                let model = try JSONDecoder().decode(Model.self, from: data)
-                completion(.success(model))
-            } catch {
-                completion(.failure(error))
-            }
-        }.resume()
+            .eraseToAnyPublisher()
     }
 }

@@ -165,13 +165,8 @@ class ArtistDetailIViewController: UIViewController {
         
         artistImage.kf.setImage(with: URL(string: viewModel.imageUrl), placeholder: UIImage(resource: .womLogo))
         favorites.addTarget(self, action: #selector(toggleStar), for: .primaryActionTriggered)
-        let splitName = viewModel.name.split(separator: "-").map { $0.trimmingCharacters(in: .whitespaces)}
-        if splitName.count == 2 {
-            songName.text = splitName[0]
-            artistName.text = splitName[1]
-        } else {
-            songName.text = viewModel.name
-        }
+        songName.text = viewModel.song
+        artistName.text = viewModel.name
         releaseDate.text = "Lanzamiento: \(viewModel.releaseDate)"
     }
     
@@ -194,7 +189,6 @@ extension ArtistDetailIViewController {
         let location = sender.location(in: view)
         if !viewContainer.frame.contains(location) {
             dismiss(animated: true, completion: nil)
-            NotificationCenter.default.post(name: NSNotification.Name("DismissDetail"), object: nil)
         }
     }
 }

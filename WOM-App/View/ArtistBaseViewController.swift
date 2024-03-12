@@ -1,4 +1,5 @@
 import UIKit
+import Combine
 
 class ArtistBaseViewController: UIViewController {
     let tableView = UITableView()

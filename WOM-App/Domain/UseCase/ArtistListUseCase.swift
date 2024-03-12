@@ -9,11 +9,13 @@ final class ArtistListUseCase {
         self.service = service
     }
     
-    func getList(countryCode: CountryCode) -> AnyPublisher<[ViewModel], RequestError> {
-        return service.getList(countryCode: countryCode)
-            .map { mapModelToViewModel(model: $0) }
-            .eraseToAnyPublisher()
-    }
+    func getList(countryCode: CountryCode) -> AnyPublisher<[ViewModel], Error> {
+            return service.getList(countryCode: countryCode)
+                .map { model in
+                    return mapModelToViewModel(model: model)
+                }
+                .eraseToAnyPublisher()
+        }
 }
 
 private func mapModelToViewModel(model: Model) -> [ViewModel] {

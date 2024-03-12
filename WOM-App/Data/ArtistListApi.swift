@@ -8,34 +8,33 @@ enum RequestError: Error {
 }
 
 protocol ArtistListService {
-    func getList(countryCode: CountryCode) -> AnyPublisher<Model, RequestError>
+    func getList(countryCode: CountryCode) -> AnyPublisher<Model, Error>
 }
 
 final class ArtistListApi: ArtistListService {
     private let urlFactory = URLFactory()
     private let urlSession = URLSession.shared
     
-    func getList(countryCode: CountryCode) -> AnyPublisher<Model, RequestError> {
+    func getList(countryCode: CountryCode) -> AnyPublisher<Model, Error> {
         guard let url = urlFactory.generateURL(with: countryCode) else {
-            return Fail(error: .invalidURL).eraseToAnyPublisher()
+            return Fail(error: RequestError.invalidURL)
+                .eraseToAnyPublisher()
         }
         
-        return URLSession.shared.dataTaskPublisher(for: url)
-            .mapError { error in
-                RequestError.networkError(error)
-            }
-            .flatMap { data, response -> AnyPublisher<Model, RequestError> in
+        return urlSession.dataTaskPublisher(for: url)
+            .tryMap { data, response in
                 guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-                    return Fail(error: RequestError.invalidResponse).eraseToAnyPublisher()
+                    throw RequestError.invalidResponse
                 }
-                
-                do {
-                    let model = try JSONDecoder().decode(Model.self, from: data)
-                    return Just(model)
-                        .setFailureType(to: RequestError.self)
-                        .eraseToAnyPublisher()
-                } catch {
-                    return Fail(error: .invalidResponse).eraseToAnyPublisher()
+                return data
+            }
+            .decode(type: Model.self, decoder: JSONDecoder())
+            .mapError { error in
+                switch error {
+                case is URLError:
+                    return RequestError.networkError(error)
+                default:
+                    return error
                 }
             }
             .eraseToAnyPublisher()

@@ -21,7 +21,7 @@ final class ArtistListViewModel {
         self.useCase = useCase
     }
 
-    func transform(input: ArtistListInput, filter: @escaping ([ViewModel]) -> [ViewModel]) -> ArtistListOutput {
+    func transform(input: ArtistListInput) -> ArtistListOutput {
         let countryCodes: [CountryCode] = [.SE, .US, .CL]
 
         return input.fetchArtistList
@@ -31,9 +31,13 @@ final class ArtistListViewModel {
                 })
                 .collect()
                 .map { responses in
-                    responses.flatMap { $0 }
+                    let flatResponses = responses.flatMap { $0 }
+                    let uniqueArtists = Array(Set(flatResponses.map { $0.fullName }))
+                    let compareArtist = uniqueArtists.map { name in
+                        flatResponses.first { $0.fullName == name }!
+                    }
+                    return compareArtist
                 }
-                .map(filter)
                 .map(ArtistListState.loaded)
                 .catch { Just(ArtistListState.failure($0)) }
                 .prepend(ArtistListState.loading)

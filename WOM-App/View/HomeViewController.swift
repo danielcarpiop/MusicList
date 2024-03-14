@@ -10,7 +10,7 @@ class HomeViewController: ArtistBaseViewController {
         super.viewDidLoad()
 
         let input = ArtistListInput(fetchArtistList: fetchArtistListSubject.eraseToAnyPublisher())
-        viewModel.transform(input: input, filter: { Array(Set($0)) })
+        viewModel.transform(input: input)
             .sink { [weak self] state in
                 switch state {
                 case .idle:

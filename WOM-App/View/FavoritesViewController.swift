@@ -11,11 +11,7 @@ class FavoritesViewController: ArtistBaseViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(handleUserDefaultsChange), name: UserDefaults.didChangeNotification, object: nil)
         
         let input = ArtistListInput(fetchArtistList: fetchArtistListSubject.eraseToAnyPublisher())
-        viewModel.transform(input: input, filter: { viewModels in
-            let favoriteIDs = UserDefaults.standard.array(forKey: "SongID") as? [String] ?? []
-            let viewFilteredViewModels = viewModels.filter { favoriteIDs.contains($0.id) }
-            return Array(Set(viewFilteredViewModels))
-        })
+        viewModel.transform(input: input)
             .sink { [weak self] state in
                 switch state {
                 case .idle:
